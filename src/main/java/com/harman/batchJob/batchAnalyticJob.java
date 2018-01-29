@@ -13,21 +13,25 @@ import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
 // This a job which we would be scheduling in cscheduler
 public class batchAnalyticJob implements Job
 {
-	private static JavaSparkContext spark_context = null;
-	private static batchAnalyticJob job_instance = null;
 	
-	public static batchAnalyticJob getInstance()
+/*	public static batchAnalyticJob getInstance()
 	{
 		if (job_instance == null)
 			job_instance = new batchAnalyticJob();
 		return job_instance;
+	}*/
+	public batchAnalyticJob()
+	{
+		
 	}
-	public void setSparkContext(JavaSparkContext gContext)
+	
+	/*public void setSparkContext(JavaSparkContext gContext)
 	{
 		this.spark_context = gContext;
+		System.out.println(gContext.version());
 		System.out.println("Spark context set \n");
 		return;
-	}
+	}*/
 
 	
 	@Override
@@ -39,10 +43,22 @@ public class batchAnalyticJob implements Job
 		//mongoInstance.ReadFromMongoDB();
 		
 		
-		JavaMongoRDD<Document> rdd = MongoSpark.load(spark_context);
+		/*SparkSession spark = SparkSession.builder()
+				.master("spark://10.0.0.4:7077")
+				.appName("BatchAnalyticsApp")
+				.config("spark.mongodb.input.uri", "mongodb://10.0.0.4/DEVICE_INFO_STORE.SmartAudioAnalytics")
+				.config("spark.mongodb.output.uri", "mongodb://10.0.0.4/DEVICE_INFO_STORE.SmartAudioAnalytics")
+				.getOrCreate();
+
+		// get Context
+		JavaSparkContext global_context = new JavaSparkContext(spark.sparkContext());*/
+		
+		System.out.println("In execute method of Scheduler");
+		JavaMongoRDD<Document> rdd = MongoSpark.load(SparkBatchJob.global_context);
 		// Analyze data from MongoDB
 		System.out.println(rdd.count());
 		System.out.println(rdd.first().toJson());
+		
 
 	}
 }	
