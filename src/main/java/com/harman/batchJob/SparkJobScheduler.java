@@ -11,6 +11,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
 
 
 public class SparkJobScheduler {
@@ -24,38 +25,45 @@ public class SparkJobScheduler {
 		return sjs;
 	}
 	
-	public void mSparkJobScheduler(JavaSparkContext gContext)
+	public void mSparkJobScheduler(/*JavaSparkContext gContext*/)
 	{
 		try {
 			/* create a scheduler */
 			SchedulerFactory sf = new StdSchedulerFactory();
-			batch_sched = sf.getScheduler("BatchAnalyticsScheduler");
+			batch_sched = sf.getScheduler();
 			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		
-		batchAnalyticJob new_job = batchAnalyticJob.getInstance();
-		new_job.setSparkContext(gContext);
+		/*batchAnalyticJob new_job = batchAnalyticJob.getInstance();
+		new_job.setSparkContext(gContext);*/
 				
 		JobDetail job1 = JobBuilder.newJob(batchAnalyticJob.class)
-				.withIdentity("BatchAnalyticsJob", "group1")
+				.withIdentity("batchAnalyticJob", "group1")
 				.build();
 
 		//This trigger will run every minute in infinite loop
-
+		System.out.println("Job build done");
 		Trigger trigger1 = TriggerBuilder.newTrigger()
-				.withIdentity("everyMinuteTrigger", "group1")
-				.startAt(new Date(System.currentTimeMillis()))
-				.withSchedule( CronScheduleBuilder.cronSchedule( "0 0/1 * 1/1 * ? *"))
-				.build();		
+			    .withIdentity("trigger1", "group1")
+			    .startNow()
+			    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+			            .withIntervalInMinutes(1)
+			            .repeatForever())
+			    .build();
+		
+		System.out.println("Job trigger done");
 		try {
+   
 			Date ft = batch_sched.scheduleJob(job1, trigger1);
-			batch_sched.start();
+      batch_sched.start();
+			
 			System.out.println(job1.getKey() + " has been scheduled to run at: " + ft);
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
+      System.out.println("SchedulerException in catch block");
 			e.printStackTrace();
 		}
 	}

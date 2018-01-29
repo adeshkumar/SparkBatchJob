@@ -8,7 +8,7 @@ import com.mongodb.spark.MongoSpark;
 import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
 
 public final class SparkBatchJob {
-
+	public static JavaSparkContext global_context;
 	public static void main(final String[] args) throws InterruptedException {
 
 		SparkSession spark = SparkSession.builder()
@@ -19,11 +19,12 @@ public final class SparkBatchJob {
 				.getOrCreate();
 
 		// get Context
-		JavaSparkContext global_context = new JavaSparkContext(spark.sparkContext());
+		 global_context = new JavaSparkContext(spark.sparkContext());
 				
 		SparkJobScheduler schedule = SparkJobScheduler.getInstance();
-		schedule.mSparkJobScheduler(global_context);
-		global_context.close();
+		schedule.mSparkJobScheduler();
+		
+		/*global_context.close();*/
 		
 
   }
