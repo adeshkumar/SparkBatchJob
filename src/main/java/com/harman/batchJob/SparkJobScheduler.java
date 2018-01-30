@@ -36,9 +36,7 @@ public class SparkJobScheduler {
 		{
 			e.printStackTrace();
 		}
-		
-		/*batchAnalyticJob new_job = batchAnalyticJob.getInstance();
-		new_job.setSparkContext(gContext);*/
+	
 				
 		JobDetail job1 = JobBuilder.newJob(batchAnalyticJob.class)
 				.withIdentity("batchAnalyticJob", "group1")
@@ -47,23 +45,23 @@ public class SparkJobScheduler {
 		//This trigger will run every minute in infinite loop
 		System.out.println("Job build done");
 		Trigger trigger1 = TriggerBuilder.newTrigger()
-			    .withIdentity("trigger1", "group1")
-			    .startNow()
-			    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-			            .withIntervalInMinutes(1)
-			            .repeatForever())
-			    .build();
-		
+				.withIdentity("trigger1", "group1")
+				.startNow()
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
+						.withIntervalInMinutes(1)
+						.repeatForever())
+				.build();
+
 		System.out.println("Job trigger done");
 		try {
-   
+
 			Date ft = batch_sched.scheduleJob(job1, trigger1);
-      batch_sched.start();
-			
+			batch_sched.start();
+
 			System.out.println(job1.getKey() + " has been scheduled to run at: " + ft);
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
-      System.out.println("SchedulerException in catch block");
+			System.out.println("SchedulerException in catch block");
 			e.printStackTrace();
 		}
 	}
