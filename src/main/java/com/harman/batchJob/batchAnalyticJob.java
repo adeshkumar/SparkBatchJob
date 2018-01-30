@@ -6,9 +6,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.harman.dbinsertion.InsertIntoMongoDB;
-import com.harman.dbinsertion.InsertionIntoMariaDB;
-import com.harman.spark.SparkTriggerThread;
+
 import com.mongodb.spark.MongoSpark;
 import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
 
