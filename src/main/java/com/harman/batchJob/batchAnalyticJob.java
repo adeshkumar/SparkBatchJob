@@ -39,7 +39,7 @@ public class batchAnalyticJob implements Job
 		
 		try{
 			//JavaRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
-			JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"date\" : { $gte : (new Date((new Date().getTime() - (30 * 24 * 60 * 60 * 1000)))) } } }").parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
+			JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"date\" : { $gte : (new Date((new Date().getTime() - (180 * 24 * 60 * 60 * 1000)))) } } }").parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
 			
 
 			System.out.println(aggregatedRdd.first().toString());
