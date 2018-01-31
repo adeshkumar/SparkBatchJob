@@ -38,13 +38,14 @@ public class batchAnalyticJob implements Job
 		// Analyze data from MongoDB
 		
 		try{
-		JavaRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
-		//JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline((List<Document>) Document.parse("Stereo",(Decoder<Document>) new BasicDBObject("$gt", 3)));
-		
-				System.out.println(aggregatedRdd.first().toString());
-				System.out.println(aggregatedRdd.count());
-//				InsertIntoMongoDB insertMongo = InsertIntoMongoDB.getInstance();
-//				insertMongo.openConnection();
+			//JavaRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
+			JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"date\" : { $gte : (new Date((new Date().getTime() - (30 * 24 * 60 * 60 * 1000)))) } } }").parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
+			
+
+			System.out.println(aggregatedRdd.first().toString());
+			System.out.println(aggregatedRdd.count());
+			//				InsertIntoMongoDB insertMongo = InsertIntoMongoDB.getInstance();
+			//				insertMongo.openConnection();
 //				insertMongo.updateCounter();
 //				insertMongo.inserSingleRecordMongoDB(s);
 
