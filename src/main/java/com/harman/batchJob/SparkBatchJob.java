@@ -9,9 +9,10 @@ import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
 
 public final class SparkBatchJob {
 	public static JavaSparkContext global_context;
+ public static SparkSession global_spark_session;
 	public static void main(final String[] args) throws InterruptedException {
 
-		SparkSession spark = SparkSession.builder()
+		global_spark_session = SparkSession.builder()
 				.master("spark://10.0.0.4:7077")
 				.appName("BatchAnalyticsApp")
 				.config("spark.mongodb.input.uri", "mongodb://10.0.0.4/DEVICE_INFO_STORE.SmartAudioAnalytics")
@@ -19,7 +20,7 @@ public final class SparkBatchJob {
 				.getOrCreate();
 
 		// get Context
-		 global_context = new JavaSparkContext(spark.sparkContext());
+		 global_context = new JavaSparkContext(global_spark_session.sparkContext());
 				
 		SparkJobScheduler schedule = SparkJobScheduler.getInstance();
 		schedule.mSparkJobScheduler();

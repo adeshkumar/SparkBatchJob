@@ -1,5 +1,6 @@
 package com.harman.batchJob;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.spark.api.java.JavaRDD;
@@ -32,44 +33,33 @@ public class batchAnalyticJob implements Job
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException 
 	{
-				
-		System.out.println("In execute method of Scheduler");
-		JavaMongoRDD<Document> rdd = MongoSpark.load(SparkBatchJob.global_context);
-		// Analyze data from MongoDB
-		
-		try{
-			//JavaRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
-			JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: {\"date\" : { $gte : (new Date((new Date().getTime() - (180 * 24 * 60 * 60 * 1000)))) } } }").parse("{ $match: {\"DeviceAnalytics.CriticalTemperatureShutDown\" : { $gte : 5 } } }")));
+		try {
 			
-
-			System.out.println(aggregatedRdd.first().toString());
-			System.out.println(aggregatedRdd.count());
-			//				InsertIntoMongoDB insertMongo = InsertIntoMongoDB.getInstance();
-			//				insertMongo.openConnection();
-//				insertMongo.updateCounter();
-//				insertMongo.inserSingleRecordMongoDB(s);
-
-//				InsertionIntoMariaDB insertMaria = InsertionIntoMariaDB.getInstance();
-//				insertMaria.insertIntoMariaDB(s);
-//
-//				if (insertMongo.getCounter() >= count) {
-//					if (insertMaria.getFeatureCounter() > emailAlertCounter) {
-//						// send email
-//						SparkTriggerThread.SendEmail("CriticalTemperatureShutDown",
-//								insertMaria.getFeatureCounter());
-//					}
-//					insertMaria.resetFeatureCounter();
-//				}
-
-		}
-		catch(Exception e)
-		{
-			
-		}
-	
-
 		
-		
+		// Load data and infer schema, disregard toDF() name as it returns Dataset
+	   Dataset<Row> implicitDS = MongoSpark.load(SparkBatchJob.global_context).toDF();
+	    implicitDS.printSchema();
+	    implicitDS.show(1,false);
+         
+	    Dataset<Row> element= implicitDS.select("DeviceAnalytics","date").toDF();
+	    element.createOrReplaceTempView("element");
+	    element.show(3,false);
+	    
+ Dataset<Row> elementTemp = SparkBatchJob.global_spark_session.sql("select DeviceAnalytics.CriticalTemperatureShutDown from element where DeviceAnalytics.CriticalTemperatureShutDown >= 4"
+	    		+ "AND date > SUBDATE( CURRENT_DATE, INTERVAL 6 HOUR)");
+	    elementTemp.createOrReplaceTempView("elementTemp");
+	    elementTemp.show();
+	    
+	   System.out.println("Count="+elementTemp.count());
+	    
+	   /* Dataset<Row> elementTemp=  element.select("DeviceAnalytics.CriticalTemperatureShutDown");
+	    elementTemp.createOrReplaceTempView("elementTemp");
+	    elementTemp.show(3,false);*/
+	    
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	    
 		}
 
 }	
