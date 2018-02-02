@@ -14,7 +14,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import static java.util.Collections.singletonList;
-
 import com.harman.dbInsertion.InsertionIntoMariaDB;
 import com.mongodb.BasicDBObject;
 import com.mongodb.spark.MongoSpark;
@@ -36,7 +35,6 @@ public class batchAnalyticJob implements Job
 	public void execute(JobExecutionContext arg0) throws JobExecutionException 
 	{
 		try {
-			
 		
 		// Load data and infer schema, disregard toDF() name as it returns Dataset
 	   Dataset<Row> implicitDS = MongoSpark.load(SparkBatchJob.global_context).toDF();
@@ -70,8 +68,7 @@ public class batchAnalyticJob implements Job
 	    
 		
 		
-		
-		}
 
+	}
 }	
 

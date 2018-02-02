@@ -10,6 +10,7 @@ import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
 public final class SparkBatchJob {
 	public static JavaSparkContext global_context;
 	public static SparkSession global_spark_session;
+
 	public static void main(final String[] args) throws InterruptedException {
 
 		global_spark_session = SparkSession.builder()
