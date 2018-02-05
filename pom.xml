@@ -82,6 +82,11 @@
 			<artifactId>spark-sql_2.11</artifactId> <!-- matching Scala version -->
 			<version>2.2.0</version>  <!-- matching Spark Core version -->
 		</dependency>
+   <dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.2.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver</artifactId>

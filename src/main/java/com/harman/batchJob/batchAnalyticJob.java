@@ -47,12 +47,12 @@ public class batchAnalyticJob implements Job
 	    
 	    
 	    Dataset<Row> elementTemp = SparkBatchJob.global_spark_session.sql("select DeviceAnalytics.CriticalTemperatureShutDown from element where DeviceAnalytics.CriticalTemperatureShutDown >= 4"
-	    		+ "AND date > SUBDATE( CURRENT_DATE, INTERVAL 6 HOUR)");
-	    elementTemp.createTempView("elementTemp");
-	    elementTemp.persist();
-	    elementTemp.show();
+	    		+ " AND date > NOW() - INTERVAL 48 HOUR");
+	    elementTemp.createOrReplaceTempView("elementTemp");
+	    elementTemp.show(3,false);
 	    
 	    System.out.println("Count="+elementTemp.count());
+         
 	    InsertionIntoMariaDB insertIntoMaria = InsertionIntoMariaDB.getInstance();
 	    insertIntoMaria.putPerIntervalCriticalTempShutdown(elementTemp.count());
 	    

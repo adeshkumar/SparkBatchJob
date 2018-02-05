@@ -32,7 +32,9 @@ public class InsertionIntoMariaDB {
 			stmt = connection.createStatement();
 			try {
 
-				int result = stmt.executeUpdate("INSERT INTO BatchCriticalTempShutDownTable (CriticalTempshutDown) VALUE(" + count + ")");
+				String query = "INSERT INTO BatchCriticalTempShutDownTable (CriticalTempshutDown) VALUE(" + count + ")";
+				System.out.println(query);
+				int result = stmt.executeUpdate(query);
 				if (result == 0)
 					response = ErrorType.ERROR_INSERTING_DB;
 				else{
