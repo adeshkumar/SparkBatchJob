@@ -1,11 +1,9 @@
 package com.harman.batchJob;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
-import org.bson.Document;
-
 import com.harman.batchJob.SparkJobScheduler;
-import com.mongodb.spark.MongoSpark;
-import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
+
+
 
 public final class SparkBatchJob {
 	public static JavaSparkContext global_context;
@@ -13,7 +11,7 @@ public final class SparkBatchJob {
 
 	public static void main(final String[] args) throws InterruptedException {
 
-global_spark_session = SparkSession.builder()
+		global_spark_session = SparkSession.builder()
 				.master("spark://10.0.0.5:7077")
 				.appName("BatchAnalyticsApp")
 				.config("spark.executor.memory", "1g")
@@ -23,13 +21,12 @@ global_spark_session = SparkSession.builder()
 				.getOrCreate();
 
 		// get Context
-		 global_context = new JavaSparkContext(global_spark_session.sparkContext());
-				
+		global_context = new JavaSparkContext(global_spark_session.sparkContext());
+
+		//Invoke quartz scheduler to schedule job
 		SparkJobScheduler schedule = SparkJobScheduler.getInstance();
 		schedule.mSparkJobScheduler();
-		
-		/*global_context.close();*/
-	
 
-  }
+	}
+
 }
