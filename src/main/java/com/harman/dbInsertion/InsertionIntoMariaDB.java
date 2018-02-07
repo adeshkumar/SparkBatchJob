@@ -56,22 +56,10 @@ public class InsertionIntoMariaDB {
 				response = ErrorType.ERROR_CLOSING_DB;
 				System.out.println("SQLException while closing data");
 			}
-			
+
 		}
 		mariaModel.closeConnection();
 		System.out.println("Response is : "+ response);
-}
-	
-	/*public int getFeatureCounter() {
-		return featureCounter;
 	}
-
-	public void updateFeatureCounter(int featureCounter) {
-		featureCounter += featureCounter;
-	}
-
-	public void resetFeatureCounter() {
-		featureCounter = 0;
-	}*/
 
 }

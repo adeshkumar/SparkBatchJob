@@ -15,29 +15,29 @@ import org.quartz.SimpleScheduleBuilder;
 
 
 public class SparkJobScheduler {
-	
+
 	private static SparkJobScheduler sjs = null;
 	private static Scheduler batch_sched;
-	
+
 	public static SparkJobScheduler getInstance() {
 		if (sjs == null)
 			sjs = new SparkJobScheduler();
 		return sjs;
 	}
-	
+
 	public void mSparkJobScheduler(/*JavaSparkContext gContext*/)
 	{
 		try {
 			/* create a scheduler */
 			SchedulerFactory sf = new StdSchedulerFactory();
 			batch_sched = sf.getScheduler();
-			
+
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-	
-				
+
+
 		JobDetail job1 = JobBuilder.newJob(batchAnalyticJob.class)
 				.withIdentity("batchAnalyticJob", "group1")
 				.build();
