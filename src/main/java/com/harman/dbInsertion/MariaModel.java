@@ -30,7 +30,7 @@ public class MariaModel {
 			Class.forName("org.mariadb.jdbc.Driver");
 			// STEP 3: Open a connection
 			System.out.println("Connecting to a selected database...");
-			connn = DriverManager.getConnection("jdbc:mariadb://10.0.0.5/DEVICE_INFO_STORE", "root", ""); 
+			connn = DriverManager.getConnection("jdbc:mariadb://10.0.0.4/DEVICE_INFO_STORE", "root", ""); 
 			System.out.println("Connected database successfully...");
 		} catch (SQLException e) {
 			System.out.println("Failed to connect db");

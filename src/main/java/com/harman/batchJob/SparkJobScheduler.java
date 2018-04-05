@@ -48,7 +48,7 @@ public class SparkJobScheduler {
 				.withIdentity("trigger1", "group1")
 				.startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
-						.withIntervalInMinutes(1)
+						.withIntervalInMinutes(10)
 						.repeatForever())
 				.build();
 

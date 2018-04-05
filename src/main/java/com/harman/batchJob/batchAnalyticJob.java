@@ -34,7 +34,7 @@ public class batchAnalyticJob implements Job, Serializable
 			System.out.println("Full Count="+fullJsonReqDS.count());
 
 			//Get the value with timefileter and create view
-			Dataset<Row> dataOnTimeFilter = SparkBatchJob.global_spark_session.sql("select DeviceAnalytics.CriticalTemperatureShutDown from implicitDS where date > NOW() - INTERVAL 120 HOUR");
+			Dataset<Row> dataOnTimeFilter = SparkBatchJob.global_spark_session.sql("select DeviceAnalytics.CriticalTemperatureShutDown from implicitDS where date > NOW() - INTERVAL 10 MINUTE");
 			dataOnTimeFilter.createOrReplaceTempView("dataOnTimeFilter"); 
 			System.out.println("after time filter Count=" +dataOnTimeFilter.count()); 
 			dataOnTimeFilter.printSchema();
